@@ -1,0 +1,7 @@
+Mackup/Library
+zsh/themes
+zsh/plugins
+Mackup/.oh-my-zsh/custom
+Mackup/.config/nvim/plugged
+Mackup/.vim
+.DS_Store
