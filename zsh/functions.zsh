@@ -25,3 +25,8 @@ function extract() {
 function mcd() {
     mkdir -p "$@" && cd "$@"
 }
+
+# ls whenever you cd into a directory
+chpwd() {
+    ls
+}

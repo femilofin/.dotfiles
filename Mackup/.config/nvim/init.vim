@@ -109,7 +109,7 @@ nnoremap <esc> :noh<return><esc>
 " Section Mappings {{{
 
 " set a map leader for more key combos
-let mapleader = ','
+let mapleader = ';'
 
 " edit ~/.config/nvim/init.vim
 map <leader>ev :e! ~/.config/nvim/init.vim<cr>
@@ -124,7 +124,7 @@ nnoremap <C-h> <C-W><C-H>
 nnoremap <leader>/ "fyiw :/<c-r>f<cr>
 
 " shortcut to save
-nmap <leader>, :w<cr>
+nmap <leader>; :w<cr>
 
 " }}}
 
