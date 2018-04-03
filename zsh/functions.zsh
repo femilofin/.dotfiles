@@ -31,6 +31,7 @@ chpwd() {
     ls -a
 }
 
+# perform git workflow
 function git_prepare() {
     git add -A; git commit -v && git push
 }
