@@ -28,5 +28,10 @@ function mcd() {
 
 # ls whenever you cd into a directory
 chpwd() {
-    ls
+    ls -a
 }
+
+function git_prepare() {
+    git add -A; git commit -v && git push
+}
+bindkey "^g" git_prepare
