@@ -1,6 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
+# export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/Oluwafemi/.oh-my-zsh
 
@@ -55,7 +57,7 @@ ZSH_THEME="spaceship"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=/Users/Oluwafemi/dotfiles/zsh
+ZSH_CUSTOM=/Users/Oluwafemi/.dotfiles/zsh
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/

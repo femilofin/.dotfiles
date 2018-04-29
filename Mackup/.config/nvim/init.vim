@@ -11,8 +11,11 @@ augroup END
 set autoread                " detect when a file is changed
 
 set history=1000            " change history to 1000
-set textwidth=120
+set textwidth=150
 
+" Persist undo
+set undofile " Maintain undo history between sessions
+set undodir=~/.config/nvim/undodir
 " }}}
 
 " Section User Interface {{{
@@ -20,6 +23,9 @@ set textwidth=120
 " scroll the viewport faster
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
+
+" Q should quit vim too
+command! Q q
 
 " remove whitespace
 nmap <C-q> :StripWhitespace<cr>
@@ -30,6 +36,8 @@ if &term =~ '256color'
     " disable background color erase
     set t_ut=
 endif
+
+set encoding=utf8
 
 " enable 24 bit color support if supported
 " if (has('mac') && empty($TMUX) && has("termguicolors"))
@@ -78,6 +86,8 @@ set scrolloff=3             " lines of text around cursor
 set shell=$SHELL
 set cmdheight=1             " command bar height
 set title                   " set terminal title
+set autowrite               " go build doesn't require the file saved first
+set updatetime=100          " update status line faster
 
 " Searching
 set ignorecase              " case insensitive searching
@@ -90,6 +100,7 @@ set magic                   " Set magic on, for regex
 
 set showmatch               " show matching braces
 set mat=2                   " how many tenths of a second to blink
+set shiftwidth=2	    " Indent by 2 spaces when using >>, <<, == etc.
 
 " error bells
 set noerrorbells
@@ -111,6 +122,13 @@ nnoremap <esc> :noh<return><esc>
 " set a map leader for more key combos
 let mapleader = ';'
 
+" keep visual mode on during indentation
+vnoremap < <gv
+vnoremap > >gv
+
+" Enable folding with the spacebar
+nnoremap <space> za
+
 " edit ~/.config/nvim/init.vim
 map <leader>ev :e! ~/.config/nvim/init.vim<cr>
 
@@ -125,6 +143,7 @@ nnoremap <leader>/ "fyiw :/<c-r>f<cr>
 
 " shortcut to save
 nmap <leader>; :w<cr>
+
 
 " }}}
 
@@ -144,16 +163,29 @@ let g:airline#extensions#whitespace#enabled = 0
 
 " hardtime options
 """"""""""""""""""""""""""""""""""""""""
-let g:hardtime_default_on = 1
+let g:hardtime_default_on = 0
 let g:hardtime_allow_different_key = 1
 let g:hardtime_ignore_buffer_patterns = [ "NERD.*" ]
 
 " nerdtree options
 """"""""""""""""""""""""""""""""""""""""
 map <silent> <leader>f :NERDTreeToggle<CR>
-map <silent> <leader>F :NERDTreeFocus<CR>
+map <silent> <leader>d :NERDTreeFocus<CR>
 let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen = 1
+" let NERDTreeQuitOnOpen = 1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeIndicatorMapCustom = {
+		\ "Modified"  : "✹",
+		\ "Staged"    : "✚",
+		\ "Untracked" : "✭",
+		\ "Renamed"   : "➜",
+		\ "Unmerged"  : "═",
+		\ "Deleted"   : "✖",
+		\ "Dirty"     : "✗",
+		\ "Clean"     : "✔︎",
+		\ 'Ignored'   : '☒',
+		\ "Unknown"   : "?"
+		\ }
 
 " FZF
 """"""""""""""""""""""""""""""""""""""""
@@ -167,12 +199,28 @@ else
     nmap <silent> <leader>t :FZF<cr>
 endif
 
+" Suggestions from https://jesseleite.com/posts/2/its-dangerous-to-vim-alone-take-fzf
+nmap <Leader>bf :Buffers<CR>
+nmap <Leader>h :History<CR>
+nmap <Leader>s :BLines<CR>
+nmap <Leader>l :Lines<CR>
+nmap <Leader>c :Commands<CR>
+nmap <Leader>m :Maps<CR>
+nmap <Leader>x :Filetypes<CR>
+
+" close quickfix window
+nmap [] :cclose<CR>
+nmap ][ :pclose<CR>
+
 " ale
 """"""""""""""""""""""""""""""""""""""""
 let g:ale_change_sign_column_color = 1
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '✖'
 let g:ale_sign_warning = '⚠'
+let g:ale_linters = {
+\   'Dockerfile': ['hadolint'],
+\}
 
 " vim fugitive
 """"""""""""""""""""""""""""""""""""""""
@@ -185,4 +233,60 @@ nmap <silent><leader>gb :Gblame<cr>
 """"""""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
 " }}}
+
+"" vim-lsp
+"""""""""""""""""""""""""""""""""""""""""
+"if executable('docker-langserver')
+"    au User lsp_setup call lsp#register_server({
+"        \ 'name': 'docker-langserver',
+"        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
+"        \ 'whitelist': ['dockerfile'],
+"        \ })
+
+" vim-shfmt
+let g:shfmt_fmt_on_save = 1
+
+" vim commentary
+autocmd FileType tf setlocal commentstring=#\ %s
+"endif
+"
+
+" python mode
+let g:pymode_python = 'python3'
+let g:pymode_warnings = 0
+let g:pymode_lint_on_fly = 1
+
+" undotree
+nmap <Leader>u :UndotreeToggle<cr>
+
+" vim-go
+let $GOPATH = "/Users/Oluwafemi/go"
+let g:go_bin_path = $GOPATH."/bin"
+let g:go_fmt_command = "goimports"
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_list_type = "quickfix"
+let g:go_auto_type_info = 1
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
+" ultisnips
+let g:UltiSnipsExpandTrigger="§"
+

@@ -5,3 +5,10 @@ Mackup/.oh-my-zsh/custom
 Mackup/.config/nvim/plugged
 Mackup/.vim
 .DS_Store
+Mackup/.config/nvim/undodir
+.pgpass
+Mackup/.npmrc
+Mackup/.gnupg
+Mackup/.config/fish/config.fish
+Mackup/.config/copyq
+init.zsh

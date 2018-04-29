@@ -10,4 +10,4 @@ alias copy="tr -d '\n' | pbcopy"
 
 eval "$(hub alias -s)"
 alias kube="kubectl"
-alias gitp=git_prepare
+
