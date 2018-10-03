@@ -30,7 +30,6 @@ Plug 'vim-airline/vim-airline' " fancy statusline
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'ryanoasis/vim-devicons' " file drawer
 Plug 'w0rp/ale' " Asynchonous linting engine
-Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
 Plug 'tpope/vim-rhubarb' " hub extension for fugitive
 Plug 'tpope/vim-repeat' " enables repeating other supported plugins with the . command
@@ -55,6 +54,7 @@ Plug 'chr4/nginx.vim' " nginx syntax highlight
 Plug 'SirVer/ultisnips' " ultimate snippet solution for Vim
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-unimpaired'
+Plug 'Yggdroot/indentLine'
 
 
 call plug#end()

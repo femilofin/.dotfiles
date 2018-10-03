@@ -101,6 +101,7 @@ set magic                   " Set magic on, for regex
 set showmatch               " show matching braces
 set mat=2                   " how many tenths of a second to blink
 set shiftwidth=2	    " Indent by 2 spaces when using >>, <<, == etc.
+set listchars=tab:>-        " expose tab
 
 " error bells
 set noerrorbells
@@ -152,6 +153,32 @@ nmap <leader>; :w<cr>
 " airline options
 """""""""""""""""""""""""""""""""""""
 let g:airline_powerline_fonts=1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_theme='base16'
@@ -211,6 +238,7 @@ nmap <Leader>x :Filetypes<CR>
 " close quickfix window
 nmap [] :cclose<CR>
 nmap ][ :pclose<CR>
+nmap ][] :lclose<CR>
 
 " ale
 """"""""""""""""""""""""""""""""""""""""
@@ -255,8 +283,10 @@ autocmd FileType tf setlocal commentstring=#\ %s
 
 " python mode
 let g:pymode_python = 'python3'
-let g:pymode_warnings = 0
+let g:pymode_warnings = 1
 let g:pymode_lint_on_fly = 1
+let g:pymode_doc = 1
+let g:pymode_doc_bind = 'K'
 
 " undotree
 nmap <Leader>u :UndotreeToggle<cr>
@@ -270,6 +300,7 @@ let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_highlight_types = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
+let g:go_autodetect_gopath = 1
 let g:go_list_type = "quickfix"
 let g:go_auto_type_info = 1
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4

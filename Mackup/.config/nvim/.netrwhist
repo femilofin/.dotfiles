@@ -1,4 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =4
 let g:netrw_dirhist_1='/Users/Oluwafemi/go/src/github.com/golang'
 let g:netrw_dirhist_2='/Users/Oluwafemi/go/src/github.com/golang/structs'
+let g:netrw_dirhist_3='/Users/Oluwafemi/Documents/repo/ehealth-deployment/logging/nginx'
+let g:netrw_dirhist_4='/Users/Oluwafemi/Documents/repo/ehealth-deployment/logging/nginx/conf'

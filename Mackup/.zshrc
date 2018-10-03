@@ -107,3 +107,8 @@ source "/Users/Oluwafemi/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
 # source all .zsh files inside of the zsh/ directory
 for config ($ZSH_CUSTOM/*.zsh) source $config
 
+
+eval $(thefuck --alias)
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/vault vault

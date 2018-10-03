@@ -10,4 +10,8 @@ alias copy="tr -d '\n' | pbcopy"
 
 eval "$(hub alias -s)"
 alias kube="kubectl"
-
+alias k="kubectl"
+alias mk="minikube"
+alias hdi="howdoi"
+alias v="vault"
+alias vlaut="vault"
