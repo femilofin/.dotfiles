@@ -64,9 +64,6 @@ map <leader>b :GoBuild<CR>
 " Execute current file
 map <C-M> :GoRun<CR>
 
-" Enable vim hard time
-let g:hardtime_default_on = 1
-
 " Map numbers
 nnoremap <F3> :NumbersToggle<CR>
 nnoremap <F4> :NumbersOnOff<CR>

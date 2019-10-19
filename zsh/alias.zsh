@@ -5,6 +5,7 @@ function _reload(){
 
 alias reload!=_reload
 alias vim="nvim"
+alias vi="nvim"
 alias ssh='TERM=screen-256color ssh'
 alias copy="tr -d '\n' | pbcopy"
 
@@ -15,3 +16,6 @@ alias mk="minikube"
 alias hdi="howdoi"
 alias v="vault"
 alias vlaut="vault"
+alias timeout="gtimeout"
+alias tower="tower-cli"
+alias cat="bat"

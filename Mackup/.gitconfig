@@ -10,5 +10,6 @@
 	br = branch
 [github]
 	user = femilofin
+	token = 3eb0335f1f37a14f08c10317fbc05b189530cbc8
 [credential]
 	helper = osxkeychain

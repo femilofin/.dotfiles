@@ -48,10 +48,10 @@ if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
 else
-	let g:onedark_termcolors=16
-	let g:onedark_terminal_italics=1
+        let g:onedark_termcolors=16
+        let g:onedark_terminal_italics=1
 
-	colorscheme onedark
+        colorscheme onedark
 endif
 
 " make comments and HTML attributes italic
@@ -100,8 +100,9 @@ set magic                   " Set magic on, for regex
 
 set showmatch               " show matching braces
 set mat=2                   " how many tenths of a second to blink
-set shiftwidth=2	    " Indent by 2 spaces when using >>, <<, == etc.
-set listchars=tab:>-        " expose tab
+set shiftwidth=2            " Indent by 2 spaces when using >>, <<, == etc.
+" set list
+" set listchars=tab:>-        " expose tab
 
 " error bells
 set noerrorbells
@@ -110,7 +111,7 @@ set t_vb=
 set tm=500
 
 if has('mouse')
-	set mouse=a
+        set mouse=a
 endif
 
 " clear highlight after search
@@ -202,17 +203,17 @@ let NERDTreeShowHidden=1
 " let NERDTreeQuitOnOpen = 1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeIndicatorMapCustom = {
-		\ "Modified"  : "✹",
-		\ "Staged"    : "✚",
-		\ "Untracked" : "✭",
-		\ "Renamed"   : "➜",
-		\ "Unmerged"  : "═",
-		\ "Deleted"   : "✖",
-		\ "Dirty"     : "✗",
-		\ "Clean"     : "✔︎",
-		\ 'Ignored'   : '☒',
-		\ "Unknown"   : "?"
-		\ }
+                \ "Modified"  : "✹",
+                \ "Staged"    : "✚",
+                \ "Untracked" : "✭",
+                \ "Renamed"   : "➜",
+                \ "Unmerged"  : "═",
+                \ "Deleted"   : "✖",
+                \ "Dirty"     : "✗",
+                \ "Clean"     : "✔︎",
+                \ 'Ignored'   : '☒',
+                \ "Unknown"   : "?"
+                \ }
 
 " FZF
 """"""""""""""""""""""""""""""""""""""""
@@ -242,13 +243,29 @@ nmap ][] :lclose<CR>
 
 " ale
 """"""""""""""""""""""""""""""""""""""""
-let g:ale_change_sign_column_color = 1
+let g:ale_change_sign_column_color = 0
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '✖'
+let g:ale_linters_explicit = 1
 let g:ale_sign_warning = '⚠'
 let g:ale_linters = {
 \   'Dockerfile': ['hadolint'],
+\   'cloudformation': ['cfn-python-lint'],
+\   'terraform': ['terraform'],
+\   'sh': ['shfmt'],
+\   'python': ['autopep8', 'reorder-python-imports'],
+\   'go': ['golint'],
+\   'json': ['jsonlint'],
 \}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'cloudformation': ['cfn-python-lint'],
+\   'sh': ['shfmt'],
+\   'python': ['autopep8', 'reorder-python-imports'],
+\   'go': ['gofmt'],
+\   'json': ['prettier'],
+\}
+let g:ale_fix_on_save = 1
 
 " vim fugitive
 """"""""""""""""""""""""""""""""""""""""
@@ -321,3 +338,22 @@ autocmd FileType go nmap <leader>r  <Plug>(go-run)
 " ultisnips
 let g:UltiSnipsExpandTrigger="§"
 
+
+let g:mkdp_browser = 'google chrome'
+
+" Jenkinsfile VIM syntax highlighting
+" au BufNewFile,BufRead Jenkinsfile setf groovy
+
+nnoremap <leader>g :Grepper -tool git<cr>
+nnoremap <leader>G :Grepper -tool ag<cr>
+
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
+
+" Optional. The default behaviour should work for most users.
+let g:grepper               = {}
+let g:grepper.tools         = ['git', 'ag', 'rg']
+let g:grepper.jump          = 1
+let g:grepper.next_tool     = '<leader>g'
+let g:grepper.simple_prompt = 1
+let g:grepper.quickfix      = 0

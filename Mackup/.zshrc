@@ -69,6 +69,8 @@ plugins=(
   iterm2
   zsh-autosuggestions
   zsh-syntax-highlighting
+  dirhistory
+  osx
 )
 source $ZSH/oh-my-zsh.sh
 
@@ -102,13 +104,19 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
-source "/Users/Oluwafemi/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+source "/Users/Oluwafemi/.dotfiles/zsh/themes/spaceship.zsh-theme"
 
 # source all .zsh files inside of the zsh/ directory
 for config ($ZSH_CUSTOM/*.zsh) source $config
 
 
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/Oluwafemi/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/Oluwafemi/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/Oluwafemi/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/Oluwafemi/google-cloud-sdk/completion.zsh.inc'; fi

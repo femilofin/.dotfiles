@@ -31,3 +31,7 @@ chpwd() {
     ls -A
 }
 
+cb() {
+    echo -n "$1" | base64 | copy
+}
+

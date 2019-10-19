@@ -29,7 +29,7 @@ Plug 'benmills/vimux' " tmux integration for vim
 Plug 'vim-airline/vim-airline' " fancy statusline
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'ryanoasis/vim-devicons' " file drawer
-Plug 'w0rp/ale' " Asynchonous linting engine
+Plug 'dense-analysis/ale' " Asynchonous linting engine
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
 Plug 'tpope/vim-rhubarb' " hub extension for fugitive
 Plug 'tpope/vim-repeat' " enables repeating other supported plugins with the . command
@@ -55,7 +55,8 @@ Plug 'SirVer/ultisnips' " ultimate snippet solution for Vim
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-unimpaired'
 Plug 'Yggdroot/indentLine'
-
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  } "markdown preview plugin for (neo)vim
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] } "grep in vim
+Plug 'sheerun/vim-polyglot' "A solid language pack for Vim
 
 call plug#end()
-
