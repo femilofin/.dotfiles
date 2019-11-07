@@ -10,8 +10,10 @@ alias ssh='TERM=screen-256color ssh'
 alias copy="tr -d '\n' | pbcopy"
 
 eval "$(hub alias -s)"
-alias kube="kubectl"
-alias k="kubectl"
+alias kube='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
+# alias kube="kubectl"
+alias kx="kubectx"
+alias kn="kubens"
 alias mk="minikube"
 alias hdi="howdoi"
 alias v="vault"
@@ -19,3 +21,4 @@ alias vlaut="vault"
 alias timeout="gtimeout"
 alias tower="tower-cli"
 alias cat="bat"
+alias eks="eksctl"
