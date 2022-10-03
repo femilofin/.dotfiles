@@ -22,3 +22,6 @@ alias timeout="gtimeout"
 alias tower="tower-cli"
 alias cat="bat"
 alias eks="eksctl"
+# using ksd for https://github.com/mfuentesg/ksd
+unalias ksd >/dev/null 2>&1
+alias helm3="helm"
