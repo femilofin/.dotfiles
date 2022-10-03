@@ -9,7 +9,7 @@ color_orange="colour166" # 208, 166
 color_purple="colour134" # 135, 134
 color_green="colour076"  # 070
 color_blue="colour39"
-color_yellow="colour220"
+color_yellow="colour230"
 color_red="colour160"
 color_black="colour232"
 color_white="white" # 015
@@ -79,7 +79,8 @@ tm_is_keys_off="#[fg=$color_light,bg=$color_window_off_indicator]#([ $(tmux show
 tm_kube="#(/bin/bash $HOME/.tmux/plugins/kube-tmux/kube.tmux 250 grey cyan)"
 
 set -g status-left $tm_session_name' '$tm_is_keys_off' '
-set -g status-right $tm_kube' '$tm_tunes' '$tm_date' '$tm_online_status
+set -g status-right $tm_tunes' '$tm_date' '$tm_online_status
+# set -g status-right $tm_tunes' '$tm_online_status
 
 # Also, change some visual styles when window keys are off
 bind -T root F12 \
