@@ -1,288 +1,223 @@
-# Spaceship theme config
-# ORDER
-SPACESHIP_PROMPT_ORDER=(
-  time
-  user
-  host
-  dir
-  git
-  hg
-  package
-  node
-  ruby
-  elixir
-  xcode
-  swift
-  golang
-  php
-  rust
-  julia
-  docker
-  aws
-  venv
-  conda
-  pyenv
-  dotnet
-  ember
-  kubecontext
-  battery
-  exec_time
-  line_sep
-  vi_mode
-  jobs
-  exit_code
-  char
-)
+#
+# Spaceship ZSH
+#
+# Author: Denys Dovhan, denysdovhan.com
+# License: MIT
+# https://github.com/denysdovhan/spaceship-prompt
+
+# Current version of Spaceship
+# Useful for issue reporting
+export SPACESHIP_VERSION='3.11.2'
+
+# Common-used variable for new line separator
+NEWLINE='
+'
+
+# Determination of Spaceship working directory
+# https://git.io/vdBH7
+if [[ -z "$SPACESHIP_ROOT" ]]; then
+  if [[ "${(%):-%N}" == '(eval)' ]]; then
+    if [[ "$0" == '-antigen-load' ]] && [[ -r "${PWD}/spaceship.zsh" ]]; then
+      # Antigen uses eval to load things so it can change the plugin (!!)
+      # https://github.com/zsh-users/antigen/issues/581
+      export SPACESHIP_ROOT=$PWD
+    else
+      print -P "%F{red}You must set SPACESHIP_ROOT to work from within an (eval).%f"
+      return 1
+    fi
+  else
+    # Get the path to file this code is executing in; then
+    # get the absolute path and strip the filename.
+    # See https://stackoverflow.com/a/28336473/108857
+    export SPACESHIP_ROOT=${${(%):-%x}:A:h}
+  fi
+fi
+
+# ------------------------------------------------------------------------------
+# CONFIGURATION
+# The default configuration that can be overridden in .zshrc
+# ------------------------------------------------------------------------------
+
+if [ -z "$SPACESHIP_PROMPT_ORDER" ]; then
+  SPACESHIP_PROMPT_ORDER=(
+    time          # Time stampts section
+    user          # Username section
+    dir           # Current directory section
+    host          # Hostname section
+    git           # Git section (git_branch + git_status)
+    hg            # Mercurial section (hg_branch  + hg_status)
+    gradle        # Gradle section
+    maven         # Maven section
+    # package       # Package version
+    # node          # Node.js section
+    ruby          # Ruby section
+    elm           # Elm section
+    elixir        # Elixir section
+    xcode         # Xcode section
+    swift         # Swift section
+    golang        # Go section
+    # php           # PHP section
+    rust          # Rust section
+    haskell       # Haskell Stack section
+    julia         # Julia section
+    docker        # Docker section
+    aws           # Amazon Web Services section
+    # gcloud        # Google Cloud Platform section
+    venv          # virtualenv section
+    conda         # conda virtualenv section
+    pyenv         # Pyenv section
+    dotnet        # .NET section
+    ember         # Ember.js section
+    kubectl       # Kubectl context section
+    terraform     # Terraform workspace section
+    # exec_time     # Execution time
+    line_sep      # Line break
+    battery       # Battery level and status
+    vi_mode       # Vi-mode indicator
+    jobs          # Background jobs indicator
+    exit_code     # Exit code section
+    char          # Prompt character
+  )
+fi
+
+if [ -z "$SPACESHIP_RPROMPT_ORDER" ]; then
+  SPACESHIP_RPROMPT_ORDER=(
+    # empty by default
+  )
+fi
 
 # PROMPT
-SPACESHIP_PROMPT_SYMBOL="➜"
-SPACESHIP_PROMPT_ADD_NEWLINE=true
-SPACESHIP_PROMPT_SEPARATE_LINE=false
-SPACESHIP_PROMPT_PREFIXES_SHOW=true
-SPACESHIP_PROMPT_SUFFIXES_SHOW=true
-SPACESHIP_PROMPT_DEFAULT_PREFIX="via "
-SPACESHIP_PROMPT_DEFAULT_SUFFIX=" "
+SPACESHIP_PROMPT_ADD_NEWLINE="${SPACESHIP_PROMPT_ADD_NEWLINE=true}"
+SPACESHIP_PROMPT_SEPARATE_LINE="${SPACESHIP_PROMPT_SEPARATE_LINE=false}"
+SPACESHIP_PROMPT_FIRST_PREFIX_SHOW="${SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=false}"
+SPACESHIP_PROMPT_PREFIXES_SHOW="${SPACESHIP_PROMPT_PREFIXES_SHOW=true}"
+SPACESHIP_PROMPT_SUFFIXES_SHOW="${SPACESHIP_PROMPT_SUFFIXES_SHOW=true}"
+SPACESHIP_PROMPT_DEFAULT_PREFIX="${SPACESHIP_PROMPT_DEFAULT_PREFIX="via "}"
+SPACESHIP_PROMPT_DEFAULT_SUFFIX="${SPACESHIP_PROMPT_DEFAULT_SUFFIX=" "}"
 
-# TIME
-SPACESHIP_TIME_SHOW=false
-SPACESHIP_TIME_PREFIX="at "
-SPACESHIP_TIME_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_TIME_FORMAT=false
-SPACESHIP_TIME_12HR=false
-SPACESHIP_TIME_COLOR="yellow"
+# Colors
+SPACESHIP_KUBECONTEXT_COLOR=gray
 
-# EXECUTION TIME
-SPACESHIP_EXEC_TIME_SHOW=false
-SPACESHIP_EXEC_TIME_PREFIX="took "
-SPACESHIP_EXEC_TIME_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_EXEC_TIME_COLOR="yellow"
-SPACESHIP_EXEC_TIME_THRESHOLD=5000
-SPACESHIP_EXEC_TIME_MS=false
+# ------------------------------------------------------------------------------
+# LIBS
+# Spaceship utils/hooks/etc
+# ------------------------------------------------------------------------------
 
-# USER
-SPACESHIP_USER_SHOW=true
-SPACESHIP_USER_PREFIX="with "
-SPACESHIP_USER_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_USER_COLOR="yellow"
-SPACESHIP_USER_COLOR_ROOT="red"
+# Load utils
+source "$SPACESHIP_ROOT/lib/utils.zsh"
 
-# HOST
-SPACESHIP_HOST_SHOW=true
-SPACESHIP_HOST_PREFIX="at "
-SPACESHIP_HOST_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_HOST_COLOR="green"
+# load hooks
+source "$SPACESHIP_ROOT/lib/hooks.zsh"
 
-# DIR
-SPACESHIP_DIR_SHOW=true
-SPACESHIP_DIR_PREFIX="in "
-SPACESHIP_DIR_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_DIR_TRUNC=1
-SPACESHIP_DIR_COLOR="cyan"
+# load section utils
+source "$SPACESHIP_ROOT/lib/section.zsh"
 
-# GIT
-SPACESHIP_GIT_SHOW=true
-SPACESHIP_GIT_PREFIX="on "
-SPACESHIP_GIT_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_GIT_SYMBOL=""
-# GIT BRANCH
-SPACESHIP_GIT_BRANCH_SHOW=true
-SPACESHIP_GIT_BRANCH_PREFIX="$SPACESHIP_GIT_SYMBOL"
-SPACESHIP_GIT_BRANCH_SUFFIX=""
-SPACESHIP_GIT_BRANCH_COLOR="magenta"
-# GIT STATUS
-SPACESHIP_GIT_STATUS_SHOW=true
-SPACESHIP_GIT_STATUS_PREFIX=" ["
-SPACESHIP_GIT_STATUS_SUFFIX="]"
-SPACESHIP_GIT_STATUS_COLOR="red"
-SPACESHIP_GIT_STATUS_UNTRACKED="?"
-SPACESHIP_GIT_STATUS_ADDED="+"
-SPACESHIP_GIT_STATUS_MODIFIED="!"
-SPACESHIP_GIT_STATUS_RENAMED="»"
-SPACESHIP_GIT_STATUS_DELETED="✘"
-SPACESHIP_GIT_STATUS_STASHED="$"
-SPACESHIP_GIT_STATUS_UNMERGED="="
-SPACESHIP_GIT_STATUS_AHEAD="⇡"
-SPACESHIP_GIT_STATUS_BEHIND="⇣"
-SPACESHIP_GIT_STATUS_DIVERGED="⇕"
+# ------------------------------------------------------------------------------
+# SECTIONS
+# Sourcing sections the prompt consists of
+# ------------------------------------------------------------------------------
 
-# HG
-SPACESHIP_HG_SHOW=true
-SPACESHIP_HG_PREFIX="on "
-SPACESHIP_HG_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_HG_SYMBOL="☿ "
-# HG BRANCH
-SPACESHIP_HG_BRANCH_SHOW=true
-SPACESHIP_HG_BRANCH_PREFIX="$SPACESHIP_HG_SYMBOL"
-SPACESHIP_HG_BRANCH_SUFFIX=""
-SPACESHIP_HG_BRANCH_COLOR="magenta"
-# HG STATUS
-SPACESHIP_HG_STATUS_SHOW=true
-SPACESHIP_HG_STATUS_PREFIX="["
-SPACESHIP_HG_STATUS_SUFFIX="]"
-SPACESHIP_HG_STATUS_COLOR="red"
-SPACESHIP_HG_STATUS_UNTRACKED="?"
-SPACESHIP_HG_STATUS_ADDED="+"
-SPACESHIP_HG_STATUS_MODIFIED="!"
-SPACESHIP_HG_STATUS_DELETED="✘"
+for section in $(spaceship::union $SPACESHIP_PROMPT_ORDER $SPACESHIP_RPROMPT_ORDER); do
+  if [[ -f "$SPACESHIP_ROOT/sections/$section.zsh" ]]; then
+    source "$SPACESHIP_ROOT/sections/$section.zsh"
+  elif spaceship::defined "spaceship_$section"; then
+    # Custom section is declared, nothing else to do
+    continue
+  else
+    echo "Section '$section' was not loaded."
+  fi
+done
 
-# PACKAGE
-SPACESHIP_PACKAGE_SHOW=true
-SPACESHIP_PACKAGE_PREFIX="is "
-SPACESHIP_PACKAGE_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_PACKAGE_SYMBOL="📦 "
-SPACESHIP_PACKAGE_COLOR="red"
+# ------------------------------------------------------------------------------
+# BACKWARD COMPATIBILITY WARNINGS
+# Show deprecation messages for options that are set, but not supported
+# ------------------------------------------------------------------------------
 
-# NODE
-SPACESHIP_NODE_SHOW=true
-SPACESHIP_NODE_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_NODE_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_NODE_SYMBOL="⬢ "
-SPACESHIP_NODE_DEFAULT_VERSION=""
-SPACESHIP_NODE_COLOR="green"
+spaceship::deprecated SPACESHIP_PROMPT_SYMBOL "Use %BSPACESHIP_CHAR_SYMBOL%b instead."
+spaceship::deprecated SPACESHIP_BATTERY_ALWAYS_SHOW "Use %BSPACESHIP_BATTERY_SHOW='always'%b instead."
+spaceship::deprecated SPACESHIP_BATTERY_CHARGING_SYMBOL "Use %BSPACESHIP_BATTERY_SYMBOL_CHARGING%b instead."
+spaceship::deprecated SPACESHIP_BATTERY_DISCHARGING_SYMBOL "Use %BSPACESHIP_BATTERY_SYMBOL_DISCHARGING%b instead."
+spaceship::deprecated SPACESHIP_BATTERY_FULL_SYMBOL "Use %BSPACESHIP_BATTERY_SYMBOL_FULL%b instead."
 
-# RUBY
-SPACESHIP_RUBY_SHOW=true
-SPACESHIP_RUBY_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_RUBY_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_RUBY_SYMBOL="💎 "
-SPACESHIP_RUBY_COLOR="red"
+# ------------------------------------------------------------------------------
+# PROMPTS
+# An entry point of prompt
+# ------------------------------------------------------------------------------
 
-# ELIXIR
-SPACESHIP_ELIXIR_SHOW=true
-SPACESHIP_ELIXIR_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_ELIXIR_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_ELIXIR_SYMBOL="💧 "
-SPACESHIP_ELIXIR_DEFAULT_VERSION=""
-SPACESHIP_ELIXIR_COLOR="magenta"
+# PROMPT
+# Primary (left) prompt
+spaceship_prompt() {
+  # Retrieve exit code of last command to use in exit_code
+  # Must be captured before any other command in prompt is executed
+  # Must be the very first line in all entry prompt functions, or the value
+  # will be overridden by a different command execution - do not move this line!
+  RETVAL=$?
 
-# XCODE
-SPACESHIP_XCODE_SHOW_LOCAL=true
-SPACESHIP_XCODE_SHOW_GLOBAL=false
-SPACESHIP_XCODE_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_XCODE_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_XCODE_SYMBOL="🛠 "
-SPACESHIP_XCODE_COLOR="blue"
+  # Should it add a new line before the prompt?
+  [[ $SPACESHIP_PROMPT_ADD_NEWLINE == true ]] && echo -n "$NEWLINE"
+  spaceship::compose_prompt $SPACESHIP_PROMPT_ORDER
+}
 
-# SWIFT
-SPACESHIP_SWIFT_SHOW_LOCAL=true
-SPACESHIP_SWIFT_SHOW_GLOBAL=false
-SPACESHIP_SWIFT_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_SWIFT_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_SWIFT_SYMBOL="🐦 "
-SPACESHIP_SWIFT_COLOR="yellow"
+# $RPROMPT
+# Optional (right) prompt
+spaceship_rprompt() {
+  # Retrieve exit code of last command to use in exit_code
+  RETVAL=$?
 
-# GOLANG
-SPACESHIP_GOLANG_SHOW=true
-SPACESHIP_GOLANG_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_GOLANG_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_GOLANG_SYMBOL="🐹 "
-SPACESHIP_GOLANG_COLOR="cyan"
+  spaceship::compose_prompt $SPACESHIP_RPROMPT_ORDER
+}
 
-# PHP
-SPACESHIP_PHP_SHOW=true
-SPACESHIP_PHP_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_PHP_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_PHP_SYMBOL="🐘 "
-SPACESHIP_PHP_COLOR="blue"
+# PS2
+# Continuation interactive prompt
+spaceship_ps2() {
+  # Retrieve exit code of last command to use in exit_code
+  RETVAL=$?
 
-# RUST
-SPACESHIP_RUST_SHOW=true
-SPACESHIP_RUST_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_RUST_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_RUST_SYMBOL="𝗥 "
-SPACESHIP_RUST_COLOR="red"
+  local char="${SPACESHIP_CHAR_SYMBOL_SECONDARY="$SPACESHIP_CHAR_SYMBOL"}"
+  spaceship::section "$SPACESHIP_CHAR_COLOR_SECONDARY" "$char"
+}
 
-# JULIA
-SPACESHIP_JULIA_SHOW=true
-SPACESHIP_JULIA_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_JULIA_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_JULIA_SYMBOL="ஃ "
-SPACESHIP_JULIA_COLOR="green"
+# ------------------------------------------------------------------------------
+# SETUP
+# Setup requirements for prompt
+# ------------------------------------------------------------------------------
 
-# DOCKER
-SPACESHIP_DOCKER_SHOW=true
-SPACESHIP_DOCKER_PREFIX="on "
-SPACESHIP_DOCKER_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_DOCKER_SYMBOL="🐳 "
-SPACESHIP_DOCKER_COLOR="cyan"
+# Runs once when user opens a terminal
+# All preparation before drawing prompt should be done here
+prompt_spaceship_setup() {
+  autoload -Uz vcs_info
+  autoload -Uz add-zsh-hook
 
-# Amazon Web Services (AWS)
-SPACESHIP_AWS_SHOW=true
-SPACESHIP_AWS_PREFIX="using "
-SPACESHIP_AWS_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_AWS_SYMBOL="☁️ "
-SPACESHIP_AWS_COLOR="208"
+  # This variable is a magic variable used when loading themes with zsh's prompt
+  # function. It will ensure the proper prompt options are set.
+  prompt_opts=(cr percent sp subst)
 
-# VENV
-SPACESHIP_VENV_SHOW=true
-SPACESHIP_VENV_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_VENV_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_VENV_COLOR="blue"
+  # Borrowed from promptinit, sets the prompt options in case the prompt was not
+  # initialized via promptinit.
+  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
 
-# CONDA
-SPACESHIP_CONDA_SHOW=true
-SPACESHIP_CONDA_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_CONDA_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_CONDA_SYMBOL="🅒 "
-SPACESHIP_CONDA_COLOR="blue"
+  # Add exec_time hooks
+  add-zsh-hook preexec spaceship_exec_time_preexec_hook
+  add-zsh-hook precmd spaceship_exec_time_precmd_hook
 
-# PYENV
-SPACESHIP_PYENV_SHOW=true
-SPACESHIP_PYENV_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_PYENV_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_PYENV_SYMBOL="🐍 "
-SPACESHIP_PYENV_COLOR="yellow"
+  # Disable python virtualenv environment prompt prefix
+  VIRTUAL_ENV_DISABLE_PROMPT=true
 
-# DOTNET
-SPACESHIP_DOTNET_SHOW=true
-SPACESHIP_DOTNET_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_DOTNET_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_DOTNET_SYMBOL=".NET "
-SPACESHIP_DOTNET_COLOR="128"
+  # Configure vcs_info helper for potential use in the future
+  add-zsh-hook precmd spaceship_exec_vcs_info_precmd_hook
+  zstyle ':vcs_info:*' enable git
+  zstyle ':vcs_info:git*' formats '%b'
 
-# EMBER
-SPACESHIP_EMBER_SHOW=true
-SPACESHIP_EMBER_PREFIX="$SPACESHIP_PROMPT_DEFAULT_PREFIX"
-SPACESHIP_EMBER_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_EMBER_SYMBOL="🐹 "
-SPACESHIP_EMBER_COLOR="210"
+  # Expose Spaceship to environment variables
+  PROMPT='$(spaceship_prompt)'
+  PS2='$(spaceship_ps2)'
+  RPS1='$(spaceship_rprompt)'
+}
 
-# KUBECONTEXT
-SPACESHIP_KUBECONTEXT_SHOW=false
-SPACESHIP_KUBECONTEXT_PREFIX="at "
-SPACESHIP_KUBECONTEXT_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_KUBECONTEXT_SYMBOL="☸️ "
-SPACESHIP_KUBECONTEXT_COLOR="cyan"
+# ------------------------------------------------------------------------------
+# ENTRY POINT
+# An entry point of prompt
+# ------------------------------------------------------------------------------
 
-# BATTERY
-SPACESHIP_BATTERY_SHOW=false
-SPACESHIP_BATTERY_ALWAYS_SHOW=false
-SPACESHIP_BATTERY_PREFIX=""
-SPACESHIP_BATTERY_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_BATTERY_CHARGING_SYMBOL="⇡"
-SPACESHIP_BATTERY_DISCHARGING_SYMBOL="⇣"
-SPACESHIP_BATTERY_FULL_SYMBOL="•"
-SPACESHIP_BATTERY_THRESHOLD=10
-
-# VI_MODE
-SPACESHIP_VI_MODE_SHOW=true
-SPACESHIP_VI_MODE_PREFIX=""
-SPACESHIP_VI_MODE_SUFFIX="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"
-SPACESHIP_VI_MODE_INSERT="[I]"
-SPACESHIP_VI_MODE_NORMAL="[N]"
-SPACESHIP_VI_MODE_COLOR="white"
-
-# JOBS
-SPACESHIP_JOBS_SHOW="true"
-SPACESHIP_JOBS_PREFIX=""
-SPACESHIP_JOBS_SUFFIX=" "
-SPACESHIP_JOBS_SYMBOL="✦"
-SPACESHIP_JOBS_COLOR="blue"
-
-# EXIT CODE
-SPACESHIP_EXIT_CODE_SHOW=false
-SPACESHIP_EXIT_CODE_PREFIX="("
-SPACESHIP_EXIT_CODE_SUFFIX=") "
-SPACESHIP_EXIT_CODE_SYMBOL="✘ "
-SPACESHIP_EXIT_CODE_COLOR="red"
-
+# Pass all arguments to the spaceship_setup function
+prompt_spaceship_setup "$@"
