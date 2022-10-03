@@ -1,7 +1,7 @@
 output = ''
 
-if (Application('Music').running()) {
-    const track = Application('Music').currentTrack;
+if (Application('Spotify').running()) {
+    const track = Application('Spotify').currentTrack;
     const artist = track.artist();
     const title = track.name();
     output = (`♫ ${title} - ${artist}`).substr(0, 60);
